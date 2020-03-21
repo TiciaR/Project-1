@@ -45,4 +45,4 @@ $.ajax({
 }).then(function (response) {
 var results = response.data;
 console.log(results);
-})
+});
