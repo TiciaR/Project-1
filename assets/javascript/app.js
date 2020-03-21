@@ -19,7 +19,6 @@ var firebaseConfig = {
   var one;
   var two;
 
-<<<<<<< HEAD
   $(document).on("click", ".btn-primary", function (event) {
     event.preventDefault();
     var input = $("#input").val();
@@ -33,11 +32,9 @@ var firebaseConfig = {
   $(".giphy-section").empty()
     var title = $(this).attr("data-value");
     console.log("title: " + title)
-    var apiKey = "Pi3IpyjBiZFkZmSASKn4J57JdmSj6rlf";
-    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + title + "&api_key=" + apiKey + "&limit=10&rating<=pg"
+    //var apiKey = "Pi3IpyjBiZFkZmSASKn4J57JdmSj6rlf";
+    var queryURL = "https://api.pokemontcg.io/v1/cards>"
 
-=======
->>>>>>> 7c33c7d9f3246e98768fd04610460a60be109d19
 // Ajax call 
 $.ajax({
     url: queryURL,
@@ -45,4 +42,4 @@ $.ajax({
 }).then(function (response) {
 var results = response.data;
 console.log(results);
-});
+})
