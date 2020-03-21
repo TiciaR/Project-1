@@ -19,6 +19,19 @@ var firebaseConfig = {
   var one;
   var two;
 
+  $("#pokebtn").on("click", function(event){
+    event.preventDefault();
+    var userPoke = $("#search-input").val().trim();
+
+    var newPoke = {
+      name: userPoke,
+    };
+
+    database.ref().push(newPoke);
+
+    console.log(newPoke.name);
+  })
+
 // Ajax call 
 $.ajax({
     url: queryURL,
