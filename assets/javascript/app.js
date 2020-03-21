@@ -19,15 +19,33 @@ var name;
 var one;
 var two;
 
-$(document).on("click", ".btn-primary", function (event) {
+
+
+//Ebay Ajax call 
+$(document).on("click", "#pokebtn", function (event) {
   event.preventDefault();
-  var input = $("#input").val();
-  topics.push(input);
-  $("#input").val("");
-  genButtons();
+  var cors_api_host = 'cors-anywhere.herokuapp.com';
+  var appId = "stevenre-p-PRD-1ef6a212e-d2503091";
+  var queryURL = "https://" + cors_api_host + "/open.api.ebay.com/shopping?callname=FindProducts&responseencoding=XML&appid=" + appId + "&siteid=0&version=967&QueryKeywords=harry%20potter&AvailableItemsOnly=true&MaxEntries=2";
+  $.ajax({
+    url: queryURL,
+    method: "GET"
+
+  }).then(function (response) {
+    var results = response.data;
+    console.log(response);
+  });
+  
+  // var input = $("#pokemonebay").val();
+  // topics.push(input);
+  // $("#pokemonebay").val("");
+  // genButtons();
 
 })
+
 genButtons();
+
+//PokemonTCG 
 $(document).on("click", ".top-genButtons", function () {
   $(".giphy-section").empty()
   var title = $(this).attr("data-value");
