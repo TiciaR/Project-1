@@ -19,6 +19,22 @@ var firebaseConfig = {
   var one;
   var two;
 
+  $(document).on("click", ".btn-primary", function (event) {
+    event.preventDefault();
+    var input = $("#input").val();
+    topics.push(input);
+    $("#input").val("");
+    genButtons();
+
+  })
+  genButtons();
+  $(document).on("click", ".top-genButtons", function () {
+  $(".giphy-section").empty()
+    var title = $(this).attr("data-value");
+    console.log("title: " + title)
+    var apiKey = "Pi3IpyjBiZFkZmSASKn4J57JdmSj6rlf";
+    var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + title + "&api_key=" + apiKey + "&limit=10&rating<=pg"
+
 // Ajax call 
 $.ajax({
     url: queryURL,
