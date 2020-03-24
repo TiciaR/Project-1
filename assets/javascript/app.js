@@ -18,12 +18,117 @@ var database = firebase.database();
 var name;
 var one;
 var two;
-function fetchKantoPokemon(){
+
+function fetchKantoPokemon() {
+  var containerDiv = document.getElementById("pokemonfacts");
   fetch("https://pokeapi.co/api/v2/pokemon?limit=151")
-  .then(response => response.json())
-  .then(allpokemon => console.log(allpokemon))
+    .then(response => response.json())
+    .then(function (allpokemon) {
+
+      allpokemon.results.forEach(function (pokemon) {
+
+        fetchPokemonData(pokemon);
+
+      })
+
+    })
+
 }
- fetchKantoPokemon();
+
+function fetchPokemonData(pokemon){
+
+  let url = pokemon.url // <--- this is saving the pokemon url to a variable to use in the fetch. 
+
+                              //Example: https://pokeapi.co/api/v2/pokemon/1/"
+
+  fetch(url)
+
+  .then(response => response.json())
+
+  .then(function(pokeData){
+
+      renderPokemon(pokeData)
+
+  })
+
+}
+
+function renderPokemon(pokeData){
+
+  let allPokemonContainer = document.getElementById('pokemonfacts');
+
+  let pokeContainer = document.createElement("div") //div will be used to hold the data/details for indiviual pokemon.{}
+
+  pokeContainer.classList.add('ui', 'card');
+
+
+
+  // createPokeImage(pokeData.id, pokeContainer);
+
+
+
+  let pokeName = document.createElement('h4') 
+
+  pokeName.innerText = pokeData.name
+
+
+
+  let pokeNumber = document.createElement('p')
+
+  pokeNumber.innerText = `#${pokeData.id}`
+
+ 
+
+  let pokeTypes = document.createElement('ul') //ul list will hold the pokemon types
+
+
+
+
+
+  createTypes(pokeData.types, pokeTypes) // helper function to go through the types array and create li tags for each one
+
+
+
+  pokeContainer.append(pokeName, pokeNumber, pokeTypes);   //appending all details to the pokeContainer div
+
+  allPokemonContainer.appendChild(pokeContainer);       //appending that pokeContainer div to the main div which will                                                             hold all the pokemon cards
+
+}
+
+function createTypes(types, ul){
+
+  types.forEach(function(type){
+
+      let typeLi = document.createElement('li');
+
+      typeLi.innerText = type['type']['name'];
+
+      ul.append(typeLi)
+
+  })
+
+}
+
+function createPokeImage(pokeID, containerDiv){
+
+  let pokeImgContainer = document.createElement('div')
+
+  pokeImgContainer.classList.add('image')
+
+
+
+  let pokeImage = document.createElement('img')
+
+  pokeImage.srcset = "https://pokeres.bastionbot.org/images/pokemon/" + pokeID + ".png"
+
+
+
+  pokeImgContainer.append(pokeImage);
+
+  containerDiv.append(pokeImgContainer);
+
+}
+fetchKantoPokemon();
 
 
 //Ebay Ajax call 
@@ -36,7 +141,7 @@ $(document).on("click", "#pokebtn", function (event) {
   var queryURL = "https://" + cors_api_host + "/open.api.ebay.com/shopping?callname=FindProducts&responseencoding=XML&appid=" + appId + "&siteid=0&version=967&QueryKeywords=" + pokeName + "&AvailableItemsOnly=true&MaxEntries=2";
   var pokeName = $("#search-input").val().trim();
   // PokeAPI var
-  var queryURL1 = "https://api.pokemontcg.io/v1/cards?name=" + pokeName;
+  // var queryURL1 = "https://api.pokemontcg.io/v1/cards?name=" + pokeName;
   // user input
   var newPokemon = {
     name: pokeName,
@@ -75,7 +180,7 @@ $(document).on("click", "#pokebtn", function (event) {
 //     var title = $(this).attr("data-value");
 //   console.log("title: " + title)
 //   //var apiKey = "Pi3IpyjBiZFkZmSASKn4J57JdmSj6rlf";
-  
+
 
 //   // Ajax call 
 
