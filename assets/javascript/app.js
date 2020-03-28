@@ -144,9 +144,7 @@ $(document).on("click", "#pokebtn", function (event) {
   var queryURL = "https://cors-anywhere.herokuapp.com/open.api.ebay.com/shopping?callname=FindProducts&responseencoding=JSON&appid=" + appId + "&siteid=0&version=967&QueryKeywords=" + pokeName + "+card&AvailableItemsOnly=true&MaxEntries=10";
   console.log(queryURL)
 
-  // PokeAPI var
-  // var queryURL1 = "https://api.pokemontcg.io/v1/cards?name=" + pokeName;
-  // user input
+  
   var newPokemon = {
     name: pokeName,
   };
@@ -183,29 +181,5 @@ $(document).on("click", "#pokebtn", function (event) {
     }
   });
 
-  //pokeAPI
-  // $.ajax({
-  //   url: queryURL1,
-  //   method: "GET"
-  // }).then(function (response) {
-  //   var results = response.data;
-  //   console.log(results);
-  // });
-
-
-
-})
-
-
-
-// //PokemonTCG 
-// $(document).on("click", "#pokebtn", function () {
-//   event.preventDefault();
-//     var title = $(this).attr("data-value");
-//   console.log("title: " + title)
-//   //var apiKey = "Pi3IpyjBiZFkZmSASKn4J57JdmSj6rlf";
-
-
-//   // Ajax call 
-
-// })
+  
+});
