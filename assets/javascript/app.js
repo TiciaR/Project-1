@@ -35,25 +35,26 @@ function fetchKantoPokemon() {
 
 }
 
-function fetchPokemonData(pokemon){
+function fetchPokemonData(pokemon) {
 
   let url = pokemon.url // <--- this is saving the pokemon url to a variable to use in the fetch. 
 
-                              //Example: https://pokeapi.co/api/v2/pokemon/1/"
+  //Example: https://pokeapi.co/api/v2/pokemon/1/"
 
   fetch(url)
 
-  .then(response => response.json())
+    .then(response => response.json())
 
-  .then(function(pokeData){
+    .then(function (pokeData) {
 
       renderPokemon(pokeData)
 
-  })
+    })
 
 }
 
-function renderPokemon(pokeData){
+function renderPokemon(pokeData) {
+  console.log("renderPokemon: ", pokeData)
 
   let allPokemonContainer = document.getElementById('pokemonfacts');
 
@@ -62,12 +63,12 @@ function renderPokemon(pokeData){
   pokeContainer.classList.add('ui', 'card');
 
 
+  console.log("before create", pokeData.id, pokeContainer)
+  createPokeImage(pokeData.id, pokeContainer);
 
-  // createPokeImage(pokeData.id, pokeContainer);
 
 
-
-  let pokeName = document.createElement('h4') 
+  let pokeName = document.createElement('h4')
 
   pokeName.innerText = pokeData.name
 
@@ -77,7 +78,7 @@ function renderPokemon(pokeData){
 
   pokeNumber.innerText = `#${pokeData.id}`
 
- 
+
 
   let pokeTypes = document.createElement('ul') //ul list will hold the pokemon types
 
@@ -95,21 +96,21 @@ function renderPokemon(pokeData){
 
 }
 
-function createTypes(types, ul){
+function createTypes(types, ul) {
 
-  types.forEach(function(type){
+  types.forEach(function (type) {
 
-      let typeLi = document.createElement('li');
+    let typeLi = document.createElement('li');
 
-      typeLi.innerText = type['type']['name'];
+    typeLi.innerText = type['type']['name'];
 
-      ul.append(typeLi)
+    ul.append(typeLi)
 
   })
 
 }
 
-function createPokeImage(pokeID, containerDiv){
+function createPokeImage(pokeID, containerDiv) {
 
   let pokeImgContainer = document.createElement('div')
 
@@ -134,15 +135,16 @@ fetchKantoPokemon();
 //Ebay Ajax call 
 $(document).on("click", "#pokebtn", function (event) {
   event.preventDefault();
-
+  var pokeName = $("#search-input").val().trim();
   // Ebay API Var
   var cors_api_host = 'cors-anywhere.herokuapp.com';
   var appId = "stevenre-p-PRD-1ef6a212e-d2503091";
-  var queryURL = "https://" + cors_api_host + "/open.api.ebay.com/shopping?callname=FindProducts&responseencoding=XML&appid=" + appId + "&siteid=0&version=967&QueryKeywords=" + pokeName + "&AvailableItemsOnly=true&MaxEntries=2";
-  var pokeName = $("#search-input").val().trim();
-  // PokeAPI var
-  // var queryURL1 = "https://api.pokemontcg.io/v1/cards?name=" + pokeName;
-  // user input
+
+
+  var queryURL = "https://cors-anywhere.herokuapp.com/open.api.ebay.com/shopping?callname=FindProducts&responseencoding=JSON&appid=" + appId + "&siteid=0&version=967&QueryKeywords=" + pokeName + "+card&AvailableItemsOnly=true&MaxEntries=10";
+  console.log(queryURL)
+
+  
   var newPokemon = {
     name: pokeName,
   };
@@ -155,33 +157,29 @@ $(document).on("click", "#pokebtn", function (event) {
     method: "GET"
 
   }).then(function (response) {
-    var results = response.data;
-    console.log(response);
+    var results = JSON.parse(response);
+    // console.log(response)
+    console.log(results);
+    $("#ebayresults").empty()
+    for (var i = 0; i < results.Product.length; i++) {
+      var item = results.Product[i]
+      console.log("--->", item)
+      var imgplaceholder="https://i.pinimg.com/originals/31/e0/4b/31e04b88bc64fe9aa52a8c9b57cb0c6b.jpg"
+      if (!item.StockPhotoURL){
+        item.StockPhotoURL = imgplaceholder
+      }
+      var ebayCard = `<div class="card col-3 m-3" style="width: 18rem;">
+<img src="${item.StockPhotoURL}" class="card-img-top ebaypic" alt="...">
+<div class="card-body">
+  <h5 class="card-title">Ebay Info</h5>
+  <p class="card-text">${item.Title}.</p>
+  <a href="${item.DetailsURL}" class="btn btn-primary">Go eBay</a>
+</div>
+</div>`
+
+      $("#ebayresults").append(ebayCard)
+    }
   });
 
-  //pokeAPI
-  // $.ajax({
-  //   url: queryURL1,
-  //   method: "GET"
-  // }).then(function (response) {
-  //   var results = response.data;
-  //   console.log(results);
-  // });
-
-
-
-})
-
-
-
-// //PokemonTCG 
-// $(document).on("click", "#pokebtn", function () {
-//   event.preventDefault();
-//     var title = $(this).attr("data-value");
-//   console.log("title: " + title)
-//   //var apiKey = "Pi3IpyjBiZFkZmSASKn4J57JdmSj6rlf";
-
-
-//   // Ajax call 
-
-// })
+  
+});
