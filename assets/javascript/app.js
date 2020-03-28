@@ -54,6 +54,7 @@ function fetchPokemonData(pokemon){
 }
 
 function renderPokemon(pokeData){
+  // console.log(pokeData)
 
   let allPokemonContainer = document.getElementById('pokemonfacts');
 
@@ -68,7 +69,11 @@ function renderPokemon(pokeData){
 
 
   let pokeName = document.createElement('h4') 
+  let pokeImage = document.createElement('img')
+  
+  console.log(pokeData.sprites.front_default)
 
+  pokeImage.src(pokeData.sprites.front_default)
   pokeName.innerText = pokeData.name
 
 
@@ -89,7 +94,7 @@ function renderPokemon(pokeData){
 
 
 
-  pokeContainer.append(pokeName, pokeNumber, pokeTypes);   //appending all details to the pokeContainer div
+  pokeContainer.append(pokeName, pokeNumber, pokeTypes, pokeImage);   //appending all details to the pokeContainer div
 
   allPokemonContainer.appendChild(pokeContainer);       //appending that pokeContainer div to the main div which will                                                             hold all the pokemon cards
 
