@@ -49,6 +49,7 @@ function fetchPokemonData(pokemon) {
 
       renderPokemon(pokeData)
 
+
     })
 
 }
@@ -60,7 +61,8 @@ function renderPokemon(pokeData) {
 
   let pokeContainer = document.createElement("div") //div will be used to hold the data/details for indiviual pokemon.{}
 
-  pokeContainer.classList.add('ui', 'card');
+  pokeContainer.classList.add('ui', 'card','col-3', 'cardPokemon');
+  pokeContainer.setAttribute("name", pokeData.name)
 
 
   console.log("before create", pokeData.id, pokeContainer)
@@ -68,19 +70,19 @@ function renderPokemon(pokeData) {
 
 
 
-  let pokeName = document.createElement('h4')
+  let pokeName = document.createElement('h3')
 
   pokeName.innerText = pokeData.name
 
 
 
-  let pokeNumber = document.createElement('p')
+  let pokeNumber = document.createElement('h4')
 
   pokeNumber.innerText = `#${pokeData.id}`
 
 
 
-  let pokeTypes = document.createElement('ul') //ul list will hold the pokemon types
+  let pokeTypes = document.createElement('div') //ul list will hold the pokemon types
 
 
 
@@ -100,7 +102,7 @@ function createTypes(types, ul) {
 
   types.forEach(function (type) {
 
-    let typeLi = document.createElement('li');
+    let typeLi = document.createElement('h5');
 
     typeLi.innerText = type['type']['name'];
 
@@ -136,7 +138,13 @@ fetchKantoPokemon();
 $(document).on("click", "#pokebtn", function (event) {
   event.preventDefault();
   var pokeName = $("#search-input").val().trim();
-  // Ebay API Var
+  $("#search-input").val("")
+eBaySearch(pokeName)
+
+})
+
+function eBaySearch(pokeName){
+    // Ebay API Var
   var cors_api_host = 'cors-anywhere.herokuapp.com';
   var appId = "stevenre-p-PRD-1ef6a212e-d2503091";
 
@@ -182,4 +190,9 @@ $(document).on("click", "#pokebtn", function (event) {
   });
 
   
-});
+};
+
+$(document).on("click", ".cardPokemon", function(){
+ var name = $(this).attr("name")
+  eBaySearch(name)
+})
